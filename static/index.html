@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dataset Request Desk</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230a1a24'/%3E%3Ccircle cx='11' cy='20' r='4' fill='%232ee6c5'/%3E%3Cpath d='M11 20 L21 10' stroke='%23ff7a3d' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Sora:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07141c;--panel:#0e2230;--panel2:#12293a;--line:#1d3b50;--text:#e7f3f7;--mute:#86a4b4;
+--teal:#2ee6c5;--teal-d:#12a58c;--amber:#ff7a3d;--blue:#4cc9f0;--gold:#ffc15e;--red:#ff6b7a;
+--h:'Sora',system-ui,sans-serif;--b:'DM Sans',system-ui,sans-serif}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--text);font:15px/1.5 var(--b);min-height:100vh;
+background-image:radial-gradient(circle at 1px 1px,#12303f 1px,transparent 0);background-size:26px 26px}
+h1,h2,h3{font-family:var(--h);margin:0;letter-spacing:-.01em}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.btn{background:var(--teal);color:#032a24;border:0;border-radius:10px;padding:.55rem 1rem;font-weight:600;cursor:pointer;transition:transform .12s,background .12s}
+.btn:hover{background:#5df0d6}.btn:active{transform:translateY(1px)}.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.warn{background:var(--amber);color:#2a0f02}.btn.warn:hover{background:#ff935f}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}.btn.ghost:hover{border-color:var(--teal);background:transparent}
+.btn.sm{padding:.3rem .65rem;font-size:13px;border-radius:8px}
+input,select,textarea{background:#091b27;border:1px solid var(--line);border-radius:10px;padding:.55rem .75rem;width:100%}
+label{display:block;font-size:13px;color:var(--mute);margin:.8rem 0 .25rem}
+.top{display:flex;align-items:center;gap:1.2rem;padding:.8rem 1.4rem;border-bottom:1px solid var(--line);background:#081a24ee;position:sticky;top:0;z-index:5;backdrop-filter:blur(8px)}
+.brand{display:flex;align-items:center;gap:.6rem;font:600 17px var(--h)}
+nav{display:flex;gap:.3rem;margin-left:1rem}
+nav button{background:none;border:0;color:var(--mute);padding:.45rem .8rem;border-radius:8px;cursor:pointer}
+nav button.on{color:var(--text);background:var(--panel2);box-shadow:inset 0 -2px var(--teal)}
+.me{margin-left:auto;display:flex;align-items:center;gap:.7rem;font-size:14px}
+.role{font-size:12px;padding:.1rem .55rem;border-radius:99px;background:#16384b;color:var(--teal)}
+main{max-width:1180px;margin:0 auto;padding:1.6rem 1.4rem 4rem}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:1.2rem}
+.grid2{display:grid;grid-template-columns:340px 1fr;gap:1.2rem;align-items:start}
+.stack{display:grid;gap:1rem}
+.row{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}.sp{margin-left:auto}
+.muted{color:var(--mute)}.small{font-size:13px}
+.pill{display:inline-block;padding:.12rem .65rem;border-radius:99px;font-size:12.5px;font-weight:600;background:#1b3a4d}
+.s-submitted{color:#a9c1cf}.s-in_progress{color:var(--blue)}.s-delivered{color:var(--gold)}.s-accepted{color:var(--teal)}.s-rejected{color:var(--red)}
+.rail{display:flex;margin:1rem 0 .4rem}
+.node{flex:1;position:relative;text-align:center;font-size:12px;color:var(--mute)}
+.node i{display:block;width:14px;height:14px;border-radius:50%;background:var(--panel2);border:2px solid var(--line);margin:0 auto 6px;position:relative;z-index:1}
+.node+.node::before{content:"";position:absolute;top:6px;left:-50%;width:100%;height:2px;background:var(--line)}
+.node.done i,.node.now i{border-color:var(--teal);background:var(--teal)}.node.done+.node::before,.node.now::before{background:var(--teal)}
+.node.now{color:var(--text);font-weight:600}.node.now i{box-shadow:0 0 0 5px #2ee6c533;background:var(--amber);border-color:var(--amber)}
+.rail.rej .node.now i{background:var(--red);border-color:var(--red);box-shadow:0 0 0 5px #ff6b7a33}.rail.rej .node.now{color:var(--red)}
+.bar{height:6px;background:#0a1d29;border-radius:9px;overflow:hidden}.bar b{display:block;height:100%;background:linear-gradient(90deg,var(--teal-d),var(--teal))}
+.reqrow{display:grid;grid-template-columns:50px 1.1fr 1.4fr 150px 100px 110px;gap:.8rem;align-items:center;padding:.75rem 1rem;border-bottom:1px solid var(--line);cursor:pointer}
+.reqrow:hover{background:var(--panel2)}.reqhead{cursor:default;color:var(--mute);font-size:13px}.reqhead:hover{background:none}
+.chips{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem}
+.chip{border:1px solid var(--line);background:none;color:var(--mute);padding:.3rem .8rem;border-radius:99px;cursor:pointer}
+.chip.on{color:#032a24;background:var(--teal);border-color:var(--teal);font-weight:600}
+.drawer{position:fixed;inset:0 0 0 auto;width:min(620px,100%);background:var(--panel);border-left:1px solid var(--line);z-index:9;overflow:auto;padding:1.4rem;box-shadow:-20px 0 60px #000a}
+.hist{margin:.4rem 0 0;padding:0;list-style:none;font-size:13px;color:var(--mute)}.hist li{padding:.2rem 0;border-left:2px solid var(--line);padding-left:.7rem}
+.eplist{max-height:260px;overflow:auto;border:1px solid var(--line);border-radius:12px}
+.ep{display:grid;grid-template-columns:24px 1fr 1fr 80px;gap:.5rem;padding:.4rem .7rem;border-bottom:1px solid var(--line);font-size:13.5px;align-items:center}
+.ep input{width:auto}.q-good{color:var(--teal)}.q-usable{color:var(--gold)}.q-bad{color:var(--red)}
+table{width:100%;border-collapse:collapse;font-size:13.5px}td,th{padding:.35rem .6rem;border-bottom:1px solid var(--line);text-align:left}th{color:var(--mute);font-weight:500}
+.scroll{max-height:340px;overflow:auto;border:1px solid var(--line);border-radius:12px}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--panel2);border:1px solid var(--line);border-left:4px solid var(--teal);padding:.7rem 1.1rem;border-radius:12px;z-index:20;max-width:90vw}
+.toast.err{border-left-color:var(--red)}
+/* login */
+.login{display:grid;grid-template-columns:1.15fr 1fr;min-height:100vh}
+.hero{padding:3.5rem;display:flex;flex-direction:column;justify-content:center;gap:1.4rem;background:linear-gradient(160deg,#0a2a38,#07141c 70%);border-right:1px solid var(--line);overflow:hidden}
+.hero h1{font-size:clamp(2rem,4vw,3.2rem);line-height:1.05;max-width:14ch}
+.strip{display:flex;gap:10px;width:max-content;animation:roll 38s linear infinite}
+.frame{width:150px;height:92px;border-radius:10px;background:#0c2332;border:1px solid var(--line);padding:.55rem;font-size:11.5px;color:var(--mute);position:relative;flex:none}
+.frame::before{content:"";position:absolute;left:-1px;right:-1px;top:-8px;height:6px;background:repeating-linear-gradient(90deg,#17384b 0 8px,transparent 8px 16px);border-radius:3px}
+.frame b{display:block;color:var(--text);font:600 12px var(--h)}.frame u{position:absolute;right:8px;bottom:8px;width:9px;height:9px;border-radius:50%}
+@keyframes roll{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.strip{animation:none}}
+.formside{display:flex;flex-direction:column;justify-content:center;padding:3rem;max-width:460px;width:100%;margin:auto}
+.demo{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:1.2rem}
+@media (max-width:900px){.login{grid-template-columns:1fr}.hero{padding:2rem}.grid2{grid-template-columns:1fr}.reqrow{grid-template-columns:40px 1fr 100px}.reqrow>:nth-child(n+4),.reqhead{display:none}}
+</style>
+</head>
+<body><div id="app"></div>
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const LABEL={submitted:'Submitted',in_progress:'In progress',delivered:'Delivered',accepted:'Accepted',rejected:'Rejected'};
+const STEPS=['submitted','in_progress','delivered','accepted'];
+const fmt=i=>new Date(i).toLocaleString([], {dateStyle:'medium',timeStyle:'short'});
+let token=sessionStorage.getItem('t'),me=null,tab='',filter='',openId=null,pick={task:'',quality:'',sel:new Set()};
+
+async function api(path,o={}){
+  const h={};if(token)h.Authorization='Bearer '+token;
+  let body=o.body;if(o.json){h['Content-Type']='application/json';body=JSON.stringify(o.json)}
+  const r=await fetch('/api'+path,{method:o.method||'GET',headers:h,body});
+  if(r.status===401&&token&&path!=='/auth/login'){logout();throw new Error('Session ended. Sign in again.')}
+  const d=await r.json().catch(()=>({}));
+  if(!r.ok)throw new Error(typeof d.detail==='string'?d.detail:(d.detail?.[0]?.msg||'Request failed'));
+  return d}
+function toast(msg,err){const t=document.createElement('div');t.className='toast'+(err?' err':'');t.textContent=msg;document.body.append(t);setTimeout(()=>t.remove(),3800)}
+const guard=fn=>async(...a)=>{try{await fn(...a)}catch(e){toast(e.message,true)}};
+function logout(){token=null;me=null;sessionStorage.removeItem('t');openId=null;login()}
+
+/* ---------- login ---------- */
+function login(){
+  const T=['pick cup','fold towel','pour water','open drawer','stack blocks','wipe table'],C=['var(--teal)','var(--gold)','var(--red)'];
+  const f=Array.from({length:24},(_,i)=>`<div class="frame"><b>EP-${String(100+i*7).padStart(5,'0')}</b>${T[i%6]}<br>${['arm-01','arm-02','mobile-01','humanoid-01'][i%4]}<u style="background:${C[[0,0,1,0,2,1][i%6]]}"></u></div>`).join('');
+  $('#app').innerHTML=`<div class="login"><section class="hero">
+   <div class="brand"><svg width="34" height="34" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#0e2a3a" stroke="#1d3b50"/><circle cx="11" cy="21" r="4" fill="#2ee6c5"/><path d="M11 21L21 10" stroke="#ff7a3d" stroke-width="3" stroke-linecap="round"/><circle cx="22" cy="9" r="2.5" fill="#ffc15e"/></svg>Dataset Request Desk</div>
+   <h1>From request to robot data, tracked.</h1>
+   <p class="muted" style="max-width:46ch;margin:0">Clients ask for episodes. Operators match them from the recording library. Every handover is logged.</p>
+   <div style="margin-top:1.6rem;margin-right:-4rem"><div class="strip">${f}${f}</div></div></section>
+  <section class="formside"><h2 style="font-size:1.6rem">Sign in</h2>
+   <form id="loginForm"><label for="em">Email</label><input id="em" type="email" required autocomplete="username">
+   <label for="pw">Password</label><input id="pw" type="password" required autocomplete="current-password">
+   <button class="btn" style="width:100%;margin-top:1.2rem">Sign in</button></form>
+   <div class="muted small" style="margin-top:1.4rem">Seeded test accounts, tap to fill:</div>
+   <div class="demo">${[['admin@example.com','admin123','Admin'],['ops1@example.com','ops123','Operator'],['client-a@example.com','client123','Client A'],['client-b@example.com','client123','Client B']].map(a=>`<button type="button" class="chip" data-act="fill" data-e="${a[0]}" data-p="${a[1]}">${a[2]}</button>`).join('')}</div>
+  </section></div>`}
+
+/* ---------- shell ---------- */
+const isOps=()=>me&&me.role!=='client';
+async function shell(){
+  const tabs=isOps()?[['requests','Requests'],['analytics','Analytics'],['import','Import']]:[['requests','My requests']];
+  if(!tab||!tabs.some(t=>t[0]===tab))tab='requests';
+  $('#app').innerHTML=`<header class="top"><div class="brand"><svg width="28" height="28" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#0e2a3a" stroke="#1d3b50"/><circle cx="11" cy="21" r="4" fill="#2ee6c5"/><path d="M11 21L21 10" stroke="#ff7a3d" stroke-width="3" stroke-linecap="round"/></svg>Request Desk</div>
+  <nav>${tabs.map(t=>`<button class="${t[0]===tab?'on':''}" data-act="tab" data-t="${t[0]}">${t[1]}</button>`).join('')}</nav>
+  <div class="me"><span>${esc(me.name)}</span><span class="role">${me.role}</span><button class="btn ghost sm" data-act="logout">Sign out</button></div></header><main id="main"></main><div id="dr"></div>`;
+  await view()}
+const view=guard(async()=>{const fn={requests:isOps()?opsRequests:clientView,analytics,import:importView}[tab];await fn()});
+const rail=st=>{const i=st==='rejected'?2:STEPS.indexOf(st);return `<div class="rail ${st==='rejected'?'rej':''}">${STEPS.map((s,k)=>`<div class="node ${k<i?'done':''} ${k===i?'now':''}"><i></i>${st==='rejected'&&k===2?'Rejected':LABEL[s]}</div>`).join('')}</div>`};
+const pill=s=>`<span class="pill s-${s}">${LABEL[s]}</span>`;
+
+/* ---------- client ---------- */
+async function clientView(){
+  const [rs,tasks]=await Promise.all([api('/requests'),api('/meta/tasks')]);
+  const d=new Date(Date.now()+14*864e5).toISOString().slice(0,10);
+  $('#main').innerHTML=`<div class="grid2"><form class="card" id="newReq"><h3>New dataset request</h3>
+   <label for="tn">Task</label><input id="tn" list="tl" required maxlength="120" placeholder="e.g. pick cup"><datalist id="tl">${tasks.map(t=>`<option value="${esc(t)}">`).join('')}</datalist>
+   <label for="ec">Episodes needed</label><input id="ec" type="number" min="1" max="100000" required value="100">
+   <label for="dl">Deadline</label><input id="dl" type="date" required value="${d}" min="${new Date().toISOString().slice(0,10)}">
+   <label for="nt">Notes</label><textarea id="nt" rows="3" maxlength="2000" placeholder="Camera angles, lighting, anything operators should know"></textarea>
+   <button class="btn" style="margin-top:1rem;width:100%">Submit request</button></form>
+   <div class="stack">${rs.length?rs.map(r=>`<div class="card"><div class="row"><h3>${esc(r.task_name)}</h3>${pill(r.status)}<span class="sp muted small">Request #${r.id}</span></div>
+    <div class="muted small">${r.episodes_requested} episodes, due ${r.deadline}</div>${rail(r.status)}
+    <div class="row small muted"><div class="bar" style="flex:1"><b style="width:${Math.min(100,100*r.assigned/r.episodes_requested)}%"></b></div>${r.assigned}/${r.episodes_requested} episodes matched</div>
+    ${r.status==='delivered'?`<div class="row" style="margin-top:1rem"><span>Your delivery is ready.</span><span class="sp"></span><button class="btn warn sm" data-act="trans" data-id="${r.id}" data-to="rejected">Reject</button><button class="btn sm" data-act="trans" data-id="${r.id}" data-to="accepted">Accept delivery</button></div>`:''}</div>`).join(''):'<div class="card muted">No requests yet. Describe what you need on the left and operators will pick it up.</div>'}</div></div>`}
+
+/* ---------- operator ---------- */
+async function opsRequests(){
+  const rs=await api('/requests'+(filter?'?status='+filter:''));
+  $('#main').innerHTML=`<div class="chips">${['',...Object.keys(LABEL)].map(s=>`<button class="chip ${s===filter?'on':''}" data-act="filter" data-s="${s}">${s?LABEL[s]:'All'}</button>`).join('')}</div>
+  <div class="card" style="padding:0"><div class="reqrow reqhead"><span>#</span><span>Client</span><span>Task</span><span>Matched</span><span>Due</span><span>Status</span></div>
+  ${rs.map(r=>`<div class="reqrow" data-act="open" data-id="${r.id}" tabindex="0"><b>${r.id}</b><span>${esc(r.client)}</span><span>${esc(r.task_name)}</span>
+   <span class="row" style="flex-wrap:nowrap"><span class="bar" style="flex:1"><b style="width:${Math.min(100,100*r.assigned/r.episodes_requested)}%"></b></span><span class="small muted">${r.assigned}/${r.episodes_requested}</span></span><span class="small">${r.deadline}</span>${pill(r.status)}</div>`).join('')||'<div class="muted" style="padding:1.2rem">Nothing here with this filter.</div>'}</div>`;
+  if(openId)await drawer()}
+const drawer=guard(async()=>{
+  const [r,tasks]=await Promise.all([api('/requests/'+openId),api('/meta/tasks')]);
+  const next={submitted:['in_progress','Start work'],in_progress:['delivered','Mark delivered'],rejected:['in_progress','Start rework']}[r.status];
+  let eps=[];if(r.status==='in_progress'){const q=new URLSearchParams();if(pick.task)q.set('task_name',pick.task);if(pick.quality)q.set('quality',pick.quality);eps=await api('/episodes?'+q)}
+  $('#dr').innerHTML=`<aside class="drawer"><div class="row"><h2>#${r.id} ${esc(r.task_name)}</h2>${pill(r.status)}<button class="btn ghost sm sp" data-act="close">Close</button></div>
+  <div class="muted small">${esc(r.client)}, ${r.episodes_requested} episodes, due ${r.deadline}</div>${r.notes?`<p class="small">${esc(r.notes)}</p>`:''}${rail(r.status)}
+  <div class="row" style="margin:.8rem 0">${next?`<button class="btn" data-act="trans" data-id="${r.id}" data-to="${next[0]}">${next[1]}</button>`:''}<span class="muted small">${r.assigned}/${r.episodes_requested} episodes assigned</span></div>
+  <h3 style="margin-top:1rem">Assigned episodes</h3><div class="eplist" style="margin:.5rem 0">${r.episodes.map(e=>`<div class="ep"><span></span><span>${esc(e.episode_id)} <span class="muted">${esc(e.robot_id)}</span></span><span>${esc(e.task_name)}</span><span>${r.status==='in_progress'?`<button class="btn ghost sm" data-act="unassign" data-id="${r.id}" data-e="${esc(e.episode_id)}">Remove</button>`:`<span class="q-${e.quality}">${e.quality}</span>`}</span></div>`).join('')||'<div class="muted small" style="padding:.7rem">None yet.</div>'}</div>
+  ${r.status==='in_progress'?`<h3 style="margin-top:1.2rem">Find episodes</h3><div class="row" style="margin:.5rem 0"><select id="pt" style="flex:1"><option value="">Any task</option>${tasks.map(t=>`<option ${t===pick.task?'selected':''}>${esc(t)}</option>`).join('')}</select>
+   <select id="pq" style="width:140px"><option value="">Good + usable</option><option value="good" ${pick.quality==='good'?'selected':''}>Good</option><option value="usable" ${pick.quality==='usable'?'selected':''}>Usable</option></select></div>
+   <div class="eplist">${eps.map(e=>`<label class="ep" style="margin:0;color:inherit"><input type="checkbox" data-act="sel" data-e="${esc(e.episode_id)}" ${pick.sel.has(e.episode_id)?'checked':''}><span>${esc(e.episode_id)} <span class="muted">${esc(e.robot_id)}</span></span><span>${esc(e.task_name)}</span><span class="q-${e.quality}">${e.quality}</span></label>`).join('')||'<div class="muted small" style="padding:.7rem">No free episodes match.</div>'}</div>
+   <button class="btn" style="margin-top:.7rem" data-act="assign" data-id="${r.id}">Assign ${pick.sel.size||''} selected</button>`:''}
+  <h3 style="margin-top:1.4rem">History</h3><ul class="hist">${r.history.map(h=>`<li>${h.from?LABEL[h.from]+' to ':'Created as '}${LABEL[h.to]}, by ${esc(h.by)}, ${fmt(h.at)}</li>`).join('')}</ul></aside>`});
+
+const analytics=async()=>{
+  const to=new Date().toISOString().slice(0,10),from=new Date(Date.now()-90*864e5).toISOString().slice(0,10);
+  $('#main').innerHTML=`<form class="row card" id="anForm" style="margin-bottom:1rem"><div><label for="af" style="margin:0">From</label><input id="af" type="date" value="${from}"></div><div><label for="at" style="margin:0">To</label><input id="at" type="date" value="${to}"></div><button class="btn" style="align-self:end">Update</button></form><div id="anOut"></div>`;
+  await runAnalytics()};
+const runAnalytics=guard(async()=>{
+  const d=await api(`/analytics?from=${$('#af').value}&to=${$('#at').value}`);
+  const robots=[...new Set(d.episodes_per_day_per_robot.map(x=>x.robot_id))],days={};
+  d.episodes_per_day_per_robot.forEach(x=>(days[x.day]??={})[x.robot_id]=x.count);
+  const m=d.median_submit_to_deliver_seconds,max=Math.max(1,...d.top_tasks_by_good_episodes.map(t=>t.good_episodes));
+  $('#anOut').innerHTML=`<div class="grid2" style="grid-template-columns:1fr 1fr"><div class="card"><h3>Requests by status</h3><div class="row" style="margin:.8rem 0">${Object.keys(LABEL).map(s=>`<div><div style="font:600 28px var(--h)" class="s-${s}">${d.requests_by_status[s]||0}</div><div class="small muted">${LABEL[s]}</div></div>`).join('<span style="width:1rem"></span>')}</div>
+   <div class="small muted">Median time to deliver: <b style="color:var(--text)">${m==null?'no deliveries yet':m<3600?Math.round(m/60)+' min':(m/3600).toFixed(1)+' h'}</b></div></div>
+   <div class="card"><h3>Top tasks by good episodes</h3>${d.top_tasks_by_good_episodes.map(t=>`<div style="margin:.6rem 0"><div class="row small"><span>${esc(t.task_name)}</span><span class="sp muted">${t.good_episodes}</span></div><div class="bar"><b style="width:${100*t.good_episodes/max}%"></b></div></div>`).join('')||'<p class="muted">No data in range.</p>'}</div></div>
+  <div class="card" style="margin-top:1rem"><h3 style="margin-bottom:.7rem">Episodes recorded per day</h3><div class="scroll"><table><tr><th>Day</th>${robots.map(r=>`<th>${r}</th>`).join('')}</tr>${Object.keys(days).map(k=>`<tr><td>${k}</td>${robots.map(r=>`<td>${days[k][r]||''}</td>`).join('')}</tr>`).join('')}</table></div></div>`});
+
+const importView=()=>{$('#main').innerHTML=`<form class="card" id="impForm" style="max-width:560px"><h3>Import episodes</h3><p class="muted small">Upload the CSV export. Safe to run repeatedly: episodes already stored are skipped, and every skipped row is explained below.</p><input type="file" id="imf" accept=".csv" required><button class="btn" style="margin-top:1rem">Import file</button></form><div id="impOut" style="margin-top:1rem"></div>`};
+
+/* ---------- events ---------- */
+document.addEventListener('click',guard(async e=>{
+  const b=e.target.closest('[data-act]');if(!b)return;const a=b.dataset.act,D=b.dataset;
+  if(a==='fill'){$('#em').value=D.e;$('#pw').value=D.p}
+  else if(a==='logout')logout();
+  else if(a==='tab'){tab=D.t;await shell()}
+  else if(a==='filter'){filter=D.s;await view()}
+  else if(a==='open'){openId=+D.id;pick={task:'',quality:'',sel:new Set()};await drawer()}
+  else if(a==='close'){openId=null;$('#dr').innerHTML=''}
+  else if(a==='trans'){await api(`/requests/${D.id}/transition`,{method:'POST',json:{to:D.to}});toast('Status is now '+LABEL[D.to]);await view()}
+  else if(a==='assign'){if(!pick.sel.size)return toast('Select at least one episode first',true);await api(`/requests/${D.id}/assignments`,{method:'POST',json:{episode_ids:[...pick.sel]}});pick.sel.clear();toast('Episodes assigned');await view()}
+  else if(a==='unassign'){await api(`/requests/${D.id}/assignments/${encodeURIComponent(D.e)}`,{method:'DELETE'});toast('Episode released');await view()}
+}));
+document.addEventListener('change',guard(async e=>{
+  if(e.target.dataset.act==='sel'){e.target.checked?pick.sel.add(e.target.dataset.e):pick.sel.delete(e.target.dataset.e);const btn=document.querySelector('[data-act=assign]');if(btn)btn.textContent=`Assign ${pick.sel.size||''} selected`}
+  else if(e.target.id==='pt'||e.target.id==='pq'){pick.task=$('#pt').value;pick.quality=$('#pq').value;await drawer()}}));
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.dataset?.act==='open')e.target.click();if(e.key==='Escape'&&openId){openId=null;$('#dr').innerHTML=''}});
+document.addEventListener('submit',guard(async e=>{
+  e.preventDefault();const id=e.target.id;
+  if(id==='loginForm'){const r=await api('/auth/login',{method:'POST',json:{email:$('#em').value,password:$('#pw').value}});token=r.token;me=r.user;sessionStorage.setItem('t',token);await shell()}
+  else if(id==='newReq'){await api('/requests',{method:'POST',json:{task_name:$('#tn').value,episodes_requested:+$('#ec').value,deadline:$('#dl').value,notes:$('#nt').value}});toast('Request submitted');await view()}
+  else if(id==='anForm')await runAnalytics();
+  else if(id==='impForm'){const fd=new FormData();fd.append('file',$('#imf').files[0]);const r=await api('/import/episodes',{method:'POST',body:fd});
+   $('#impOut').innerHTML=`<div class="card"><h3>${r.imported} imported, ${r.skipped} skipped <span class="muted small">of ${r.total_rows} rows</span></h3><div class="row" style="margin:.7rem 0">${Object.entries(r.skipped_by_reason).map(([k,v])=>`<span class="pill">${esc(k)}: ${v}</span>`).join('')}</div><div class="scroll"><table><tr><th>Line</th><th>Episode</th><th>Reason</th></tr>${r.details.map(d=>`<tr><td>${d.line}</td><td>${esc(d.episode_id)||'-'}</td><td>${esc(d.reason)}</td></tr>`).join('')}</table></div></div>`}}));
+
+(async()=>{if(token){try{me=await api('/me');await shell();return}catch{}}login()})();
+</script></body></html>
