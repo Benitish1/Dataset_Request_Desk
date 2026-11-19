@@ -5,6 +5,17 @@ Internal platform replacing the episode/request spreadsheets. FastAPI + PostgreS
 ## Live deployment
 **https://datasetdesk.vercel.app**
 
+### Try it
+Open the link and click a demo button on the sign-in page. No sign-up needed:
+
+| Button | Email | Password | What you can do |
+|---|---|---|---|
+| Client A | client-a@example.com | client123 | Create dataset requests, accept or reject deliveries |
+| Operator | ops1@example.com | ops123 | Pick up requests, assign episodes, mark delivered; analytics and CSV import |
+| Client B | client-b@example.com | client123 | A second client: cannot see Client A's requests |
+
+Suggested tour: as **Client A** create a request (e.g. "pick cup", 3 episodes) → sign out → as **Operator** open it, *Start work*, tick 3 episodes, *Assign*, *Mark delivered* → back as **Client A**, accept or reject. Demo accounts are shared, so you may see other visitors' requests. The admin account is private.
+
 Hosted on Vercel (FastAPI as a Python serverless function, `api/index.py` + `vercel.json`) with a Neon Postgres database. Each cold start applies migrations and the idempotent seed under a Postgres advisory lock, so no separate migrate step is needed.
 
 Environment variables (Vercel → Project → Settings → Environment Variables):

@@ -110,6 +110,8 @@ function login(){
    <form id="loginForm"><label for="em">Email</label><input id="em" type="email" required autocomplete="username">
    <label for="pw">Password</label><input id="pw" type="password" required autocomplete="current-password">
    <button class="btn" style="width:100%;margin-top:1.2rem">Sign in</button></form>
+   <div class="muted small" style="margin-top:1.4rem">Just looking around? Try a demo account:</div>
+   <div class="demo">${[['ops1@example.com','ops123','Operator'],['client-a@example.com','client123','Client A'],['client-b@example.com','client123','Client B']].map(a=>`<button type="button" class="chip" data-act="demo" data-e="${a[0]}" data-p="${a[1]}">${a[2]}</button>`).join('')}</div>
   </section></div>`}
 
 /* ---------- shell ---------- */
@@ -181,7 +183,8 @@ const importView=()=>{$('#main').innerHTML=`<form class="card" id="impForm" styl
 /* ---------- events ---------- */
 document.addEventListener('click',guard(async e=>{
   const b=e.target.closest('[data-act]');if(!b)return;const a=b.dataset.act,D=b.dataset;
-  if(a==='logout')logout();
+  if(a==='demo'){const r=await api('/auth/login',{method:'POST',json:{email:D.e,password:D.p}});token=r.token;me=r.user;sessionStorage.setItem('t',token);await shell()}
+  else if(a==='logout')logout();
   else if(a==='tab'){tab=D.t;await shell()}
   else if(a==='filter'){filter=D.s;await view()}
   else if(a==='open'){openId=+D.id;pick={task:'',quality:'',sel:new Set()};await drawer()}
