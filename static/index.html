@@ -110,8 +110,8 @@ function login(){
    <form id="loginForm"><label for="em">Email</label><input id="em" type="email" required autocomplete="username">
    <label for="pw">Password</label><input id="pw" type="password" required autocomplete="current-password">
    <button class="btn" style="width:100%;margin-top:1.2rem">Sign in</button></form>
-   <div class="muted small" style="margin-top:1.4rem">Seeded test accounts, tap to fill:</div>
-   <div class="demo">${[['admin@example.com','admin123','Admin'],['ops1@example.com','ops123','Operator'],['client-a@example.com','client123','Client A'],['client-b@example.com','client123','Client B']].map(a=>`<button type="button" class="chip" data-act="fill" data-e="${a[0]}" data-p="${a[1]}">${a[2]}</button>`).join('')}</div>
+   ${['localhost','127.0.0.1'].includes(location.hostname)?`<div class="muted small" style="margin-top:1.4rem">Seeded test accounts, tap to fill:</div>
+   <div class="demo">${[['admin@example.com','admin123','Admin'],['ops1@example.com','ops123','Operator'],['client-a@example.com','client123','Client A'],['client-b@example.com','client123','Client B']].map(a=>`<button type="button" class="chip" data-act="fill" data-e="${a[0]}" data-p="${a[1]}">${a[2]}</button>`).join('')}</div>`:''}
   </section></div>`}
 
 /* ---------- shell ---------- */
