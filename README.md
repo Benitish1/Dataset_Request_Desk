@@ -3,7 +3,7 @@
 Internal platform replacing the episode/request spreadsheets. FastAPI + PostgreSQL 16 + Alembic, with a dependency-free single-page UI served by the API. 
 
 ## Live deployment
-URL: _added after the first Vercel deploy._
+**https://dataset-desk-benitha.vercel.app**
 
 Hosted on Vercel (FastAPI as a Python serverless function, `api/index.py` + `vercel.json`) with a Neon Postgres database. Each cold start applies migrations and the idempotent seed under a Postgres advisory lock, so no separate migrate step is needed.
 
