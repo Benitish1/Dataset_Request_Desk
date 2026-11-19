@@ -5,6 +5,9 @@ from sqlalchemy import Boolean, Date, DateTime, ForeignKey, Integer, String, Tex
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship, sessionmaker
 
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+psycopg2://postgres:12345@localhost:5432/desk")
+# Some hosts hand out "postgres://" URLs, which SQLAlchemy 2 rejects.
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = "postgresql+psycopg2://" + DATABASE_URL[len("postgres://"):]
 engine = create_engine(DATABASE_URL, pool_pre_ping=True, connect_args={"options": "-c timezone=UTC"})
 SessionLocal = sessionmaker(engine, expire_on_commit=False)
 
