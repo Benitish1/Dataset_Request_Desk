@@ -72,6 +72,9 @@ table{width:100%;border-collapse:collapse;font-size:13.5px}td,th{padding:.35rem 
 @keyframes roll{to{transform:translateX(-50%)}}
 @media (prefers-reduced-motion:reduce){.strip{animation:none}}
 .formside{display:flex;flex-direction:column;justify-content:center;padding:3rem;max-width:460px;width:100%;margin:auto}
+.pwbox{position:relative}.pwbox input{padding-right:2.6rem}
+.eye{position:absolute;right:.35rem;top:50%;transform:translateY(-50%);background:none;border:0;color:var(--mute);padding:.35rem;border-radius:8px;cursor:pointer;display:flex}
+.eye:hover{color:var(--text)}.eye .slash{display:none}.eye[aria-pressed="true"] .slash{display:inline}
 .demo{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:1.2rem}
 @media (max-width:900px){.login{grid-template-columns:1fr}.hero{padding:2rem}.grid2{grid-template-columns:1fr}.reqrow{grid-template-columns:40px 1fr 100px}.reqrow>:nth-child(n+4),.reqhead{display:none}}
 </style>
@@ -108,7 +111,7 @@ function login(){
    <div style="margin-top:1.6rem;margin-right:-4rem"><div class="strip">${f}${f}</div></div></section>
   <section class="formside"><h2 style="font-size:1.6rem">Sign in</h2>
    <form id="loginForm"><label for="em">Email</label><input id="em" type="email" required autocomplete="username">
-   <label for="pw">Password</label><input id="pw" type="password" required autocomplete="current-password">
+   <label for="pw">Password</label><div class="pwbox"><input id="pw" type="password" required autocomplete="current-password"><button type="button" class="eye" data-act="eye" aria-label="Show password" aria-pressed="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path class="slash" d="M3 3l18 18"/></svg></button></div>
    <button class="btn" style="width:100%;margin-top:1.2rem">Sign in</button></form>
    <div class="muted small" style="margin-top:1.4rem">Just looking around? Pick a demo account, then press Sign in:</div>
    <div class="demo">${[['ops1@example.com','ops123','Operator'],['client-a@example.com','client123','Client A'],['client-b@example.com','client123','Client B']].map(a=>`<button type="button" class="chip" data-act="demo" data-e="${a[0]}" data-p="${a[1]}">${a[2]}</button>`).join('')}</div>
@@ -183,7 +186,8 @@ const importView=()=>{$('#main').innerHTML=`<form class="card" id="impForm" styl
 /* ---------- events ---------- */
 document.addEventListener('click',guard(async e=>{
   const b=e.target.closest('[data-act]');if(!b)return;const a=b.dataset.act,D=b.dataset;
-  if(a==='demo'){$('#em').value=D.e;$('#pw').value=D.p;document.querySelectorAll('[data-act=demo]').forEach(c=>c.classList.toggle('on',c===b));$('#loginForm button').focus()}
+  if(a==='eye'){const p=$('#pw'),show=p.type==='password';p.type=show?'text':'password';b.setAttribute('aria-pressed',show);b.setAttribute('aria-label',show?'Hide password':'Show password')}
+  else if(a==='demo'){$('#em').value=D.e;$('#pw').value=D.p;document.querySelectorAll('[data-act=demo]').forEach(c=>c.classList.toggle('on',c===b));$('#loginForm button').focus()}
   else if(a==='logout')logout();
   else if(a==='tab'){tab=D.t;await shell()}
   else if(a==='filter'){filter=D.s;await view()}
