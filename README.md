@@ -2,6 +2,20 @@
 
 Internal platform replacing the episode/request spreadsheets. FastAPI + PostgreSQL 16 + Alembic, with a dependency-free single-page UI served by the API. 
 
+## Live deployment
+**https://dataset-request-desk.vercel.app**
+
+Hosted on Vercel (FastAPI as a Python serverless function, `api/index.py` + `vercel.json`) with a Neon Postgres database. Each cold start applies migrations and the idempotent seed under a Postgres advisory lock, so no separate migrate step is needed.
+
+Environment variables (Vercel → Project → Settings → Environment Variables):
+| Name | Value |
+|---|---|
+| `DATABASE_URL` / `DATABASE_URL_UNPOOLED` | added automatically by the Neon integration |
+| `JWT_SECRET` | long random string |
+| `ADMIN_EMAIL` / `ADMIN_PASSWORD` | the real admin account; the public demo admin `admin@example.com` is disabled when these are set |
+
+The operator/client demo accounts below also exist on the live site. Vercel caps request bodies at 4.5 MB, so large CSV imports should go through the CLI importer instead.
+
 ## Run it (needs Docker)
 ```bash
 docker compose up --build

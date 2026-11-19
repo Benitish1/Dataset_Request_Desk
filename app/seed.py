@@ -39,8 +39,12 @@ def seed_users(s):
     s.commit()
 
 
-if __name__ == "__main__":
+def run():
     with SessionLocal() as s:
         seed_users(s)
         rep = import_csv(s, (SEED / "episodes.csv").read_text(encoding="utf-8-sig"))
         print("seed import:", {k: v for k, v in rep.items() if k != "details"})
+
+
+if __name__ == "__main__":
+    run()

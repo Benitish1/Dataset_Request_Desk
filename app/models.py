@@ -4,7 +4,9 @@ from datetime import date, datetime
 from sqlalchemy import Boolean, Date, DateTime, ForeignKey, Integer, String, Text, create_engine, func
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship, sessionmaker
 
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+psycopg2://postgres:12345@localhost:5432/desk")
+# On Vercel + Neon, use the direct connection: the pooler rejects the startup `options` set below.
+DATABASE_URL = (os.getenv("DATABASE_URL_UNPOOLED") or os.getenv("DATABASE_URL")
+                or "postgresql+psycopg2://postgres:12345@localhost:5432/desk")
 # Some hosts hand out "postgres://" URLs, which SQLAlchemy 2 rejects.
 if DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = "postgresql+psycopg2://" + DATABASE_URL[len("postgres://"):]
