@@ -6,7 +6,7 @@ Internal platform replacing the episode/request spreadsheets. FastAPI + PostgreS
 **https://datasetdesk.vercel.app**
 
 ### Try it
-Open the link and click a demo button on the sign-in page. No sign-up needed:
+Open the link, click a demo account on the sign-in page to fill in its email and password, then press **Sign in**. No sign-up needed:
 
 | Button | Email | Password | What you can do |
 |---|---|---|---|
