@@ -14,7 +14,7 @@ Open the link, click a demo account on the sign-in page to fill in its email and
 | Operator | ops1@example.com | ops123 | Pick up requests, assign episodes, mark delivered; analytics and CSV import |
 | Client B | client-b@example.com | client123 | A second client: cannot see Client A's requests |
 
-Suggested tour: as **Client A** create a request (e.g. "pick cup", 3 episodes) → sign out → as **Operator** open it, *Start work*, tick 3 episodes, *Assign*, *Mark delivered* → back as **Client A**, accept or reject. Demo accounts are shared, so you may see other visitors' requests. The admin account is private.
+Suggested tour: as **Client A** create a request (e.g. "pick cup", 3 episodes) → sign out → as **Operator** open it, *Start work*, tick 3 episodes, *Assign*, *Mark delivered* → back as **Client A**, accept or reject. Demo accounts are shared, so you may see other visitors' requests.
 
 Hosted on Vercel (FastAPI as a Python serverless function, `api/index.py` + `vercel.json`) with a Neon Postgres database. Each cold start applies migrations and the idempotent seed under a Postgres advisory lock, so no separate migrate step is needed.
 
@@ -23,7 +23,6 @@ Environment variables (Vercel → Project → Settings → Environment Variables
 |---|---|
 | `DATABASE_URL` / `DATABASE_URL_UNPOOLED` | added automatically by the Neon integration |
 | `JWT_SECRET` | long random string |
-| `ADMIN_EMAIL` / `ADMIN_PASSWORD` | the real admin account; the public demo admin `admin@example.com` is disabled when these are set |
 
 The operator/client demo accounts below also exist on the live site. Vercel caps request bodies at 4.5 MB, so large CSV imports should go through the CLI importer instead.
 
@@ -37,7 +36,6 @@ Postgres is also exposed on `localhost:5433` (user `postgres`, password `12345`,
 ## Seed accounts (from `seed/users.json`; stored bcrypt-hashed)
 | Role | Email | Password |
 |---|---|---|
-| admin | admin@example.com | admin123 |
 | operator | ops1@example.com / ops2@example.com | ops123 |
 | client | client-a@example.com / client-b@example.com | client123 |
 
@@ -61,5 +59,4 @@ API docs: http://localhost:8000/docs · Health: `GET /health` · One JSON log li
 
 ## Scope notes
 - Stretch item: **none chosen** (deliberately; correctness and tests first).
-- Admin user management (create/deactivate/change role) exists in the API (`/api/users`, see `/docs`) but has no UI screen.
 - Set a real `JWT_SECRET` outside local use.
