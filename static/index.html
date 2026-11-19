@@ -110,8 +110,6 @@ function login(){
    <form id="loginForm"><label for="em">Email</label><input id="em" type="email" required autocomplete="username">
    <label for="pw">Password</label><input id="pw" type="password" required autocomplete="current-password">
    <button class="btn" style="width:100%;margin-top:1.2rem">Sign in</button></form>
-   ${['localhost','127.0.0.1'].includes(location.hostname)?`<div class="muted small" style="margin-top:1.4rem">Seeded test accounts, tap to fill:</div>
-   <div class="demo">${[['admin@example.com','admin123','Admin'],['ops1@example.com','ops123','Operator'],['client-a@example.com','client123','Client A'],['client-b@example.com','client123','Client B']].map(a=>`<button type="button" class="chip" data-act="fill" data-e="${a[0]}" data-p="${a[1]}">${a[2]}</button>`).join('')}</div>`:''}
   </section></div>`}
 
 /* ---------- shell ---------- */
@@ -183,8 +181,7 @@ const importView=()=>{$('#main').innerHTML=`<form class="card" id="impForm" styl
 /* ---------- events ---------- */
 document.addEventListener('click',guard(async e=>{
   const b=e.target.closest('[data-act]');if(!b)return;const a=b.dataset.act,D=b.dataset;
-  if(a==='fill'){$('#em').value=D.e;$('#pw').value=D.p}
-  else if(a==='logout')logout();
+  if(a==='logout')logout();
   else if(a==='tab'){tab=D.t;await shell()}
   else if(a==='filter'){filter=D.s;await view()}
   else if(a==='open'){openId=+D.id;pick={task:'',quality:'',sel:new Set()};await drawer()}
